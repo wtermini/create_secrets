@@ -1,0 +1,18 @@
+version: 0.2
+
+env:
+  variables:
+    CREATE_SECRET_NAMES: "Secret1,Secret2,Secret3"
+    DELETE_SECRET_NAMES: ""
+    PIP_INDEX_URL: "https://pypi.org/simple"  # Replace with your custom repository URL
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - pip install --upgrade pip --index-url $PIP_INDEX_URL --trusted-host $(echo $PIP_INDEX_URL | awk -F/ '{print $3}')
+      - pip install boto3 --index-url $PIP_INDEX_URL --trusted-host $(echo $PIP_INDEX_URL | awk -F/ '{print $3}')
+  build:
+    commands:
+      - python secrets.py
